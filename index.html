@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InternRobotics</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #0a0a0a;
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: rgba(10, 10, 10, 0.9);
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 1px solid #222;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            color: #4a9eff;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 30px;
+        }
+        
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            font-size: 16px;
+        }
+        
+        nav ul li a:hover {
+            color: #4a9eff;
+        }
+        
+        /* Hero Section with Video Background */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .hero-video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .hero-background-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                135deg,
+                rgba(10, 10, 10, 0.7) 0%,
+                rgba(10, 10, 10, 0.5) 50%,
+                rgba(10, 10, 10, 0.7) 100%
+            );
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            margin-bottom: 2.5rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            color: #f0f0f0;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .hero-background-video {
+                object-position: center;
+            }
+        }
+
+        /* 加载时的备用背景 */
+        .hero-video-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            z-index: -1;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: #4a9eff;
+            color: #fff;
+            padding: 12px 30px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .btn:hover {
+            background-color: #3a8aef;
+            transform: translateY(-2px);
+        }
+        
+        /* Products Section */
+        .section {
+            padding: 100px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .section-title p {
+            color: #aaa;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .product-card {
+            background-color: #111;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #222;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .product-img {
+            height: 200px;
+            background-color: #222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            color: #4a9eff;
+        }
+        
+        .product-content {
+            padding: 25px;
+        }
+        
+        .product-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .product-content p {
+            color: #aaa;
+            margin-bottom: 20px;
+        }
+        
+        /* 添加到CSS部分 */
+        .product-img {
+            height: 300px;
+            background-color: #222;
+            border-radius: 8px 8px 0 0;
+            overflow: hidden;
+        }
+
+        .product-img a {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .product-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .product-img img:hover {
+            transform: scale(1.05);
+        }
+
+        .products-grid {
+            display: flex;
+            justify-content: center; /* 居中显示单个卡片 */
+        }
+
+        /* Features Section */
+        .features {
+            background-color: #111;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            text-align: center;
+            padding: 30px 20px;
+        }
+        
+        .feature-icon {
+            font-size: 40px;
+            color: #4a9eff;
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+        
+        .feature-card p {
+            color: #aaa;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #0a0a0a;
+            padding: 60px 0 30px;
+            border-top: 1px solid #222;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column ul li a:hover {
+            color: #4a9eff;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #222;
+            color: #666;
+            font-size: 14px;
+        }
+        /* 图片模态框样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 8px;
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .close:hover {
+            color: #4a9eff;
+        }
+
+        .zoom-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .zoom-image:hover {
+            transform: scale(1.02);
+        }
+
+        .product-card {
+            cursor: pointer;
+        }
+
+        /* 移除按钮样式，因为不需要按钮了 */
+        .product-content {
+            display: none;
+        }
+
+        /* 视频容器样式 - 适配640x360比例 (16:9) */
+        .video-container {
+            position: relative;
+            width: 100%;
+            /* 640:360 = 16:9 比例 */
+            height: 0;
+            padding-bottom: 56.25%; /* 360/640 = 0.5625 = 56.25% */
+            background: #111;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .feature-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* 保持原始比例，不裁剪 */
+            background: #000; /* 视频未加载时的背景色 */
+            border-radius: 8px;
+        }
+
+        /* 视频控制按钮样式 - 圆形版本 */
+        .video-controls {
+            position: absolute;
+            bottom: 15px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            padding: 0 10px;
+            z-index: 10;
+        }
+
+        .video-btn {
+            background: transparent;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+        }
+
+        .video-btn:hover {
+            transform: scale(1.2);
+        }
+
+        .circle {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .video-btn.active .circle {
+            background: #4a9eff;
+            border-color: #4a9eff;
+            transform: scale(1.3);
+        }
+
+        .video-btn:hover .circle {
+            background: rgba(74, 158, 255, 0.7);
+            border-color: #4a9eff;
+        }
+
+        /* 调整feature卡片高度以适应视频 */
+        .feature-card {
+            text-align: center;
+            padding: 20px;
+            background: #111;
+            border-radius: 8px;
+            border: 1px solid #222;
+        }
+
+        .feature-icon {
+            display: none; /* 隐藏原来的图标 */
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            margin-top: 10px;
+        }
+
+        .feature-card p {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        /* 调整网格布局以适应新的视频比例 */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        /* Sim2Real Section Styles */
+        #sim2real {
+            background: linear-gradient(135deg, #0a0a0a 0%, #111 100%);
+            padding: 100px 0;
+        }
+
+        .sim2real-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .video-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        .sim2real-video-item {
+            background: #111;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #222;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .sim2real-video-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(74, 158, 255, 0.2);
+            border-color: #4a9eff;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            background: #000;
+        }
+
+        .auto-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .video-caption {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .video-caption h4 {
+            color: #fff;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .video-caption p {
+            color: #aaa;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .video-row {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .sim2real-grid {
+                gap: 20px;
+            }
+            
+            #sim2real {
+                padding: 60px 0;
+            }
+        }
+
+        /* Animation for section entrance */
+        .sim2real-video-item {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .sim2real-video-item:nth-child(1) { animation-delay: 0.1s; }
+        .sim2real-video-item:nth-child(2) { animation-delay: 0.2s; }
+        .sim2real-video-item:nth-child(3) { animation-delay: 0.3s; }
+        .sim2real-video-item:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            nav ul {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+      <div class="container">
+          <div class="header-content">
+              <a href="#" class="logo">
+                  <img src="logos/logo.png" alt="InternRobotics" style="height: 40px; margin-right: 10px;">
+                  <!-- InternRobotics -->
+              </a>
+              <nav>
+                  <ul>
+                      <li><a href="https://huggingface.co/datasets/InternRobotics/InternData-A1" target="_blank" style="font-size: 1.1rem; font-weight: 600;">Download</a></li>
+                      <li><a href="#features" style="font-size: 1.1rem; font-weight: 600;">Features</a></li>
+                      <li><a href="#products" style="font-size: 1.1rem; font-weight: 600;">Statistics</a></li>
+                      <li><a href="#pre-train-eff" style="font-size: 1.1rem; font-weight: 600;">Pre-training Effects</a></li>
+                      <li><a href="#sim2real" style="font-size: 1.1rem; font-weight: 600;">Sim-to-Real</a></li>
+                      <li><a href="#contact" style="font-size: 1.1rem; font-weight: 600;">Contact</a></li>
+                  </ul>
+              </nav>
+          </div>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-video-container">
+          <video class="hero-background-video" autoplay muted loop playsinline webkit-playsinline>
+              <source src="videos/teaser/teaser.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+          </video>
+          <div class="hero-video-overlay"></div>
+      </div>
+      <div class="container" style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+          <div class="hero-content" style="text-align: center; width: 100%; max-width: 1200px;">
+              <h1 style="font-size: 4.5rem; font-weight: 800; margin-bottom: 2rem;">InternData-A1</h1>
+              <p style="font-size: 1.8rem; font-weight: 600; line-height: 1.4; margin-bottom: 3rem; max-width: 800px; margin-left: auto; margin-right: auto;">
+                  Pioneering High-Fidelity Synthetic Data for Pre-training Generalist Policy.
+              </p>
+              <a href="#products" class="btn" style="font-size: 1.3rem; font-weight: 600; padding: 15px 40px;">Explore Our Datasets</a>
+          </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="section features">
+      <div class="container">
+          <div class="section-title" style="text-align: center;">
+              <h2 style="font-size: 3rem; margin-bottom: 1.5rem;">Advanced Features</h2>
+              <p style="font-size: 1.5rem; line-height: 1.6; max-width: 900px; margin: 0 auto 2rem; font-weight: 600; color: #e0e0e0;">
+                  We provide exceptional visual rendering and physics simulation effects.
+              </p>
+          </div>
+          <div class="features-grid">
+              <!-- Rich Objects Feature -->
+              <div class="feature-card">
+                  <div class="video-container" style="max-width: 1000px; margin: 0 auto;">
+                      <video class="feature-video" autoplay muted loop playsinline webkit-playsinline poster="images/ai-poster.jpg" style="width: 100%; height: auto;">
+                          <source src="videos/objects/deform.mp4" type="video/mp4">
+                          Your browser does not support the video tag.
+                      </video>
+                      <div class="video-controls">
+                          <button class="video-btn active" data-video="videos/objects/deform.mp4">
+                              <span class="circle"></span>
+                          </button>
+                          <button class="video-btn" data-video="videos/objects/fluid.mp4">
+                              <span class="circle"></span>
+                          </button>
+                          <button class="video-btn" data-video="videos/objects/art.mp4">
+                              <span class="circle"></span>
+                          </button>
+                          <button class="video-btn" data-video="videos/objects/rigid.mp4">
+                              <span class="circle"></span>
+                          </button>
+                      </div>
+                  </div>
+                  <h3 style="font-size: 1.8rem; margin: 1.5rem 0 1rem;">Rich Objects</h3>
+                  <p style="font-size: 1.3rem; line-height: 1.6; max-width: 900px; margin: 0 auto 2rem; font-weight: 600; color: #e0e0e0;">Offers fluid, deformable, articulated and rigid object manipulation.</p>
+              </div>
+
+              <!-- Long-horizon Tasks Feature -->
+              <div class="feature-card">
+                  <div class="video-container" style="max-width: 1000px; margin: 0 auto;">
+                      <video class="feature-video" autoplay muted loop playsinline webkit-playsinline poster="images/ai-poster.jpg" style="width: 100%; height: auto;">
+                          <source src="videos/long/long_0.mp4" type="video/mp4">
+                          Your browser does not support the video tag.
+                      </video>
+                      <div class="video-controls">
+                          <button class="video-btn active" data-video="videos/long/long_0.mp4">
+                              <span class="circle"></span>
+                          </button>
+                          <button class="video-btn" data-video="videos/long/long_1.mp4">
+                              <span class="circle"></span>
+                          </button>
+                          <button class="video-btn" data-video="videos/long/long_2.mp4">
+                              <span class="circle"></span>
+                          </button>
+                          <button class="video-btn" data-video="videos/long/long_3.mp4">
+                              <span class="circle"></span>
+                          </button>
+                      </div>
+                  </div>
+                  <h3 style="font-size: 1.8rem; margin: 1.5rem 0 1rem;">Long-horizon Tasks</h3>
+                  <p style="font-size: 1.3rem; line-height: 1.6; max-width: 900px; margin: 0 auto 2rem; font-weight: 600; color: #e0e0e0;">Involves multi-stage, multi-robot collaboration and moving object manipulation tasks.</p>
+              </div>
+
+              <!-- Cross Embodiments Feature -->
+              <div class="feature-card">
+                  <div class="video-container" style="max-width: 1000px; margin: 0 auto;">
+                      <video class="feature-video" autoplay muted loop playsinline webkit-playsinline poster="images/ai-poster.jpg" style="width: 100%; height: auto;">
+                          <source src="videos/embodiments/em_0.mp4" type="video/mp4">
+                          Your browser does not support the video tag.
+                      </video>
+                      <div class="video-controls">
+                          <button class="video-btn active" data-video="videos/embodiments/em_0.mp4">
+                              <span class="circle"></span>
+                          </button>
+                          <button class="video-btn" data-video="videos/embodiments/em_1.mp4">
+                              <span class="circle"></span>
+                          </button>
+                          <button class="video-btn" data-video="videos/embodiments/em_2.mp4">
+                              <span class="circle"></span>
+                          </button>
+                          <button class="video-btn" data-video="videos/embodiments/em_3.mp4">
+                              <span class="circle"></span>
+                          </button>
+                      </div>
+                  </div>
+                  <h3 style="font-size: 1.8rem; margin: 1.5rem 0 1rem;">Cross Embodiments</h3>
+                  <p style="font-size: 1.3rem; line-height: 1.6; max-width: 900px; margin: 0 auto 2rem; font-weight: 600; color: #e0e0e0;">Supports Genie-1, Agilex Split Aloha, ARX Lift-2, Franka Emika Panda</p>
+              </div>
+          </div>
+      </div>
+    </section>
+
+    <!-- 或者使用这个版本，图片高度更大 -->
+    <section id="products" class="section">
+      <div class="container">
+          <div class="section-title" style="text-align: center;">
+              <h2 style="font-size: 3rem; margin-bottom: 1.5rem;">Dataset Overview</h2>
+              <!-- font-size: 1.8rem; font-weight: 600; line-height: 1.4; margin-bottom: 3rem; max-width: 800px; margin-left: auto; margin-right: auto; -->
+              <p style="font-size: 1.5rem; line-height: 1.6; max-width: 900px; margin: 0 auto 2rem; font-weight: 600; color: #e0e0e0;">
+                We provide 4 single or dual-arm embodiments, 70 diverse tasks, 3185 rigid objects, 321 articulation objects, 20 garments, and 227 rooms.
+                All these elements consist of 630k episodes, 401.4M frames and 7433.9 hours.
+              </p>
+          </div>
+          <div class="product-img" style="max-width: 1400px; height: auto; margin: 0 auto;">
+            <img src="images/stats.png" alt="Dataset Statistics" class="zoom-image" style="width: 100%; height: auto;">
+          </div>
+      </div>
+    </section>
+
+    <!-- 图片放大模态框 -->
+    <div id="imageModal" class="modal">
+      <span class="close">&times;</span>
+      <img class="modal-content" id="modalImage">
+    </div>
+
+    <!-- Pre-training Effects Section -->
+    <section id="pre-train-eff" class="section">
+      <div class="container">
+          <div class="section-title" style="text-align: center;">
+              <h2 style="font-size: 3rem; margin-bottom: 1.5rem;">Pre-training Effects</h2>
+              <p style="font-size: 1.5rem; line-height: 1.6; max-width: 900px; margin: 0 auto 3rem; font-weight: 600; color: #e0e0e0;">
+                  The resulting model matches the performance of the official π₀ model.
+              </p>
+          </div>
+          <div style="max-width: 1200px; margin: 0 auto;">
+              <video class="pre-training-video" autoplay muted loop playsinline webkit-playsinline style="width: 100%; height: auto; border-radius: 12px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);">
+                  <source src="videos/real/real.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+              </video>
+          </div>
+      </div>
+    </section>
+
+    <!-- Sim2Real Section -->
+    <section id="sim2real" class="section">
+      <div class="container">
+          <div class="section-title" style="text-align: center;">
+              <h2 style="font-size: 3rem; margin-bottom: 1.5rem;">Simulation-to-Real World Transfer</h2>
+              <p style="font-size: 1.5rem; line-height: 1.6; max-width: 900px; margin: 0 auto 2rem; font-weight: 600; color: #e0e0e0;">
+                  Exclusively trained on InternData-A1, no real data.
+              </p>
+          </div>
+          
+          <div class="sim2real-grid">
+              <!-- Row 1 -->
+              <div class="video-row">
+                  <!-- Video 1 -->
+                  <div class="sim2real-video-item">
+                      <div class="video-container" style="max-width: 1000px; margin: 0 auto;">
+                          <video class="auto-video" autoplay muted loop playsinline webkit-playsinline style="width: 100%; height: auto;">
+                              <source src="videos/sim2real/s2r_out_0.mp4" type="video/mp4">
+                              Your browser does not support the video tag.
+                          </video>
+                          <div class="video-caption">
+                              <h4 style="font-size: 1.8rem; margin: 1.5rem 0 1rem;">Simulation Training</h4>
+                              <p style="font-size: 1.2rem; line-height: 1.5;">Model training in simulated environment</p>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <!-- Video 2 -->
+                  <div class="sim2real-video-item">
+                      <div class="video-container" style="max-width: 1000px; margin: 0 auto;">
+                          <video class="auto-video" autoplay muted loop playsinline webkit-playsinline style="width: 100%; height: auto;">
+                              <source src="videos/sim2real/s2r_out_1.mp4" type="video/mp4">
+                              Your browser does not support the video tag.
+                          </video>
+                          <div class="video-caption">
+                              <h4 style="font-size: 1.8rem; margin: 1.5rem 0 1rem;">Real World Execution</h4>
+                              <p style="font-size: 1.2rem; line-height: 1.5;">Corresponding real-world performance</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              
+              <!-- Row 2 -->
+              <div class="video-row">
+                  <!-- Video 3 -->
+                  <div class="sim2real-video-item">
+                      <div class="video-container" style="max-width: 1000px; margin: 0 auto;">
+                          <video class="auto-video" autoplay muted loop playsinline webkit-playsinline style="width: 100%; height: auto;">
+                              <source src="videos/sim2real/s2r_out_2.mp4" type="video/mp4">
+                              Your browser does not support the video tag.
+                          </video>
+                          <div class="video-caption">
+                              <h4 style="font-size: 1.8rem; margin: 1.5rem 0 1rem;">Simulation Training</h4>
+                              <p style="font-size: 1.2rem; line-height: 1.5;">Advanced task learning in simulation</p>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <!-- Video 4 -->
+                  <div class="sim2real-video-item">
+                      <div class="video-container" style="max-width: 1000px; margin: 0 auto;">
+                          <video class="auto-video" autoplay muted loop playsinline webkit-playsinline style="width: 100%; height: auto;">
+                              <source src="videos/sim2real/s2r_out_3.mp4" type="video/mp4">
+                              Your browser does not support the video tag.
+                          </video>
+                          <div class="video-caption">
+                              <h4 style="font-size: 1.8rem; margin: 1.5rem 0 1rem;">Real World Execution</h4>
+                              <p style="font-size: 1.2rem; line-height: 1.5;">Successful real-world deployment</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+      <div class="container">
+          <div class="section-title" style="text-align: center;">
+              <h2 style="font-size: 3rem; margin-bottom: 3rem;">Team</h2>
+          </div>
+
+          <!-- Core Contributors -->
+          <div style="text-align: center; margin-bottom: 4rem;">
+              <h3 style="font-size: 2rem; margin-bottom: 2rem; color: #e0e0e0;">Core Contributors</h3>
+              <div style="display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap;">
+                  <!-- Contributor 1 -->
+                  <a href="https://scholar.google.com/citations?user=leXXHKwAAAAJ&hl=en" target="_blank" style="text-decoration: none;">
+                      <div style="text-align: center;">
+                          <img src="images/nimol.jpg" alt="Contributor 1" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;">
+                          <p style="margin-top: 1rem; font-size: 1.1rem; font-weight: 600; color: #e0e0e0;">Yang Tian</p>
+                      </div>
+                  </a>
+                  <!-- Contributor 2 -->
+                  <a href="https://scholar.google.com/citations?user=0yB_bqEAAAAJ&hl=en" target="_blank" style="text-decoration: none;">
+                      <div style="text-align: center;">
+                          <img src="images/yuyin.jpg" alt="Contributor 2" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;">
+                          <p style="margin-top: 1rem; font-size: 1.1rem; font-weight: 600; color: #e0e0e0;">Yuyin Yang</p>
+                      </div>
+                  </a>
+                  <!-- Contributor 3 -->
+                  <a href="https://scholar.google.com.hk/citations?user=ZOmjVnYAAAAJ&hl=zh-CN&oi=sra" target="_blank" style="text-decoration: none;">
+                      <div style="text-align: center;">
+                          <img src="images/yiman.jpg" alt="Contributor 3" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;">
+                          <p style="margin-top: 1rem; font-size: 1.1rem; font-weight: 600; color: #e0e0e0;">Yiman Xie</p>
+                      </div>
+                  </a>
+                  <!-- Contributor 4 -->
+                  <a href="https://scholar.google.com/citations?user=ysLG2VAAAAAJ&hl=en" target="_blank" style="text-decoration: none;">
+                      <div style="text-align: center;">
+                          <img src="images/zetao.jpg" alt="Contributor 4" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;">
+                          <p style="margin-top: 1rem; font-size: 1.1rem; font-weight: 600; color: #e0e0e0;">Zetao Cai</p>
+                      </div>
+                  </a>
+                  <!-- Contributor 5 -->
+                  <a href="https://scholar.google.com/citations?user=2qsvFVIAAAAJ&hl=zh-CN" target="_blank" style="text-decoration: none;">
+                      <div style="text-align: center;">
+                          <img src="images/xushi.jpeg" alt="Contributor 5" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;">
+                          <p style="margin-top: 1rem; font-size: 1.1rem; font-weight: 600; color: #e0e0e0;">Xu Shi</p>
+                      </div>
+                  </a>
+              </div>
+          </div>
+
+          <!-- Core Advisors -->
+          <div style="text-align: center;">
+              <h3 style="font-size: 2rem; margin-bottom: 2rem; color: #e0e0e0;">Core Advisors</h3>
+              <div style="display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap;">
+                  <!-- Advisor 1 -->
+                  <a href="https://scholar.google.com/citations?user=kYrUfMoAAAAJ&hl=zh-CN" target="_blank" style="text-decoration: none;">
+                      <div style="text-align: center;">
+                          <img src="images/increase.jpeg" alt="Advisor 1" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;">
+                          <p style="margin-top: 1rem; font-size: 1.1rem; font-weight: 600; color: #e0e0e0;">Jia Zeng</p>
+                      </div>
+                  </a>
+                  <!-- Advisor 2 -->
+                  <a href="https://scholar.google.com/citations?user=ssSfKpAAAAAJ&hl=zh-CN" target="_blank" style="text-decoration: none;">
+                      <div style="text-align: center;">
+                          <img src="images/miao.jpg" alt="Advisor 2" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;">
+                          <p style="margin-top: 1rem; font-size: 1.1rem; font-weight: 600; color: #e0e0e0;">Jiangmiao Pang</p>
+                      </div>
+                  </a>
+                  <!-- Advisor 3 -->
+                  <a href="https://scholar.google.com/citations?user=GeSCNR4AAAAJ&hl=zh-CN" target="_blank" style="text-decoration: none;">
+                      <div style="text-align: center;">
+                          <img src="images/badminton.jpg" alt="Advisor 3" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;">
+                          <p style="margin-top: 1rem; font-size: 1.1rem; font-weight: 600; color: #e0e0e0;">Junhao Cai</p>
+                      </div>
+                  </a>
+                  <!-- Advisor 4 -->
+                  <a href="https://scholar.google.com/citations?user=xLFL4sMAAAAJ&hl=en" target="_blank" style="text-decoration: none;">
+                      <div style="text-align: center;">
+                          <img src="images/henry.jpeg" alt="Advisor 4" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;">
+                          <p style="margin-top: 1rem; font-size: 1.1rem; font-weight: 600; color: #e0e0e0;">Hao Dong</p>
+                      </div>
+                  </a>
+              </div>
+          </div>
+      </div>
+    </section>
+
+    <!-- Footer
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Products</h3>
+                    <ul>
+                        <li><a href="#">AgiBot-X</a></li>
+                        <li><a href="#">AgiBot-Lite</a></li>
+                        <li><a href="#">AgiBot-Pro</a></li>
+                        <li><a href="#">Accessories</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">News</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">Training</a></li>
+                        <li><a href="#">Community</a></li>
+                        <li><a href="#">Service & Repair</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Connect</h3>
+                    <ul>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">LinkedIn</a></li>
+                        <li><a href="#">YouTube</a></li>
+                        <li><a href="#">GitHub</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 Agibot. All rights reserved.</p>
+            </div>
+        </div>
+    </footer> -->
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Header background on scroll
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.backgroundColor = 'rgba(10, 10, 10, 0.95)';
+                header.style.backdropFilter = 'blur(10px)';
+            } else {
+                header.style.backgroundColor = 'rgba(10, 10, 10, 0.9)';
+                header.style.backdropFilter = 'none';
+            }
+        });
+        // 图片放大功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const zoomImage = document.querySelector('.zoom-image');
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            const closeBtn = document.querySelector('.close');
+            
+            // 点击图片打开模态框
+            zoomImage.addEventListener('click', function() {
+                modal.style.display = 'flex';
+                modalImg.src = this.src;
+            });
+            
+            // 点击关闭按钮
+            closeBtn.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+            
+            // 点击模态框背景关闭
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+            
+            // 按ESC键关闭
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+        // 更积极的自动播放尝试
+        function forceAutoplay() {
+            const videos = document.querySelectorAll('.feature-video');
+            
+            videos.forEach(video => {
+                video.muted = true;
+                video.playsInline = true;
+                video.setAttribute('playsinline', '');
+                video.setAttribute('webkit-playsinline', '');
+                
+                // 多次尝试播放
+                const tryPlay = () => {
+                    video.play().then(() => {
+                        console.log('Video autoplay successful');
+                    }).catch(error => {
+                        console.log('Autoplay attempt failed, retrying...', error);
+                        // 延迟后重试
+                        setTimeout(tryPlay, 500);
+                    });
+                };
+                
+                tryPlay();
+            });
+        }
+        
+        // 页面加载后立即尝试
+        setTimeout(forceAutoplay, 100);
+        
+        // 视频切换功能
+        document.querySelectorAll('.video-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const videoContainer = this.closest('.video-container');
+                const video = videoContainer.querySelector('.feature-video');
+                const newVideoSrc = this.getAttribute('data-video');
+                
+                // 更新活跃状态
+                videoContainer.querySelectorAll('.video-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                // 切换视频源
+                video.querySelector('source').src = newVideoSrc;
+                video.load();
+                video.muted = true;
+                video.playsInline = true;
+                
+                // 强制播放新视频
+                setTimeout(() => {
+                    video.play().catch(e => console.log('Switch play failed:', e));
+                }, 100);
+            });
+        });
+    });
+
+document.addEventListener('DOMContentLoaded', function() {
+    // 强制自动播放所有视频
+    function forceVideoAutoplay() {
+        const videos = document.querySelectorAll('.auto-video');
+        
+        videos.forEach((video, index) => {
+            video.muted = true;
+            video.playsInline = true;
+            
+            // 延迟播放以避免同时加载所有视频
+            setTimeout(() => {
+                video.play().then(() => {
+                    console.log(`Video ${index + 1} autoplay successful`);
+                }).catch(error => {
+                    console.log(`Video ${index + 1} autoplay failed:`, error);
+                    // 静默失败，不显示错误
+                });
+            }, index * 200); // 错开加载时间
+        });
+    }
+    
+    // 页面加载后立即尝试自动播放
+    setTimeout(forceVideoAutoplay, 500);
+    
+    // 使用 Intersection Observer 确保视频在视口内时播放
+    const videoObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const video = entry.target;
+                if (video.paused) {
+                    video.play().catch(e => console.log('Intersection play failed'));
+                }
+            }
+        });
+    }, { threshold: 0.5 });
+    
+    // 观察所有视频
+    document.querySelectorAll('.auto-video').forEach(video => {
+        videoObserver.observe(video);
+    });
+});
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const heroVideo = document.querySelector('.hero-background-video');
+        
+        // 确保视频播放
+        heroVideo.play().catch(error => {
+            console.log('Hero video autoplay failed:', error);
+        });
+        
+        // 视频加载失败时的备用处理
+        heroVideo.addEventListener('error', function() {
+            console.log('Hero video failed to load, using fallback background');
+            const videoContainer = document.querySelector('.hero-video-container');
+            videoContainer.style.background = 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%)';
+        });
+    });
+
+
+    </script>
+</body>
+</html>
